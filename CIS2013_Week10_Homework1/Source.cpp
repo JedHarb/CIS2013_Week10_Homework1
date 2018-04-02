@@ -1,5 +1,7 @@
 #include<iostream>
 #include<cstring>
+#include<stdlib.h>
+#include<time.h>
 using namespace std;
 
 void boardLegnthNumberPrint(int i) {
@@ -12,11 +14,18 @@ void boardLegnthNumberPrint(int i) {
 void boardLegnthLinePrint(int i) {
 	cout << "__";
 }
+
+int getRandom(int i)
+{
+	return rand() % i;
+}
+
 //When the application is run...
 //* Application asks for a board size in the form on x & y.
 //* The application then asks for a number of bombs to plant.
 //* Using DYNAMIC ARRAYS the applicaiton prints a "blank board" of that size.
 //* The number of bombs is randomly "placed" throughout the board but not displayed.
+
 
 int main() {
 
@@ -25,11 +34,12 @@ int main() {
 	int boardXSize = 0;
 	int boardYSize = 0;
 	int numbBombs = 0;
+	int boardSize = 0;
+	char *boardBombs;
+	int checkBombs = 0;
+	int randBoardSpace = 0;
 
-	cout << "Welcome to minesweeper!" << endl;
 	//start the game
-	while (gameOver == false) {
-
 		cout << endl << "First, how big of a board do you want to play on?" << endl << "Width: ";
 		cin >> boardXSize;
 		while (boardXSize > 99 || boardXSize < 1) {
@@ -75,12 +85,50 @@ int main() {
 			}
 			cout << endl;
 		}
+		
+		boardBombs = new char[boardXSize * boardYSize];
 
+		while (checkBombs < numbBombs) {
+			randBoardSpace = getRandom(boardXSize * boardYSize);
+			while (boardBombs[randBoardSpace] == 'X') {
+				randBoardSpace = getRandom(boardXSize * boardYSize);
+			}
+			boardBombs[randBoardSpace] = 'X';
+			checkBombs++;
+		}
+
+		for (int x = 0; x<boardXSize * boardYSize; x++) {
+			cout << boardBombs[x] << endl;
+		}
+
+		delete[] boardBombs;
+
+
+	while (gameOver == false) {
 
 	}	
 	
 	
-	
+	//	int *a;
+	//	a = new int[len];
+
+	//	for (int i = 0; i<len; i++) {
+	//		cout << "Int number " << i << " should be: ";
+	//		cin >> a[i];
+	//	}
+
+	//	cout << endl << "Your list of numbers is:" << endl;
+
+	//	for (int x = 0; x<len; x++) {
+	//		cout << a[x] << endl;
+	//	}
+
+	//	cout << "Do you want to continue: Y=1, N=0 :";
+	//	cin >> cont;
+
+	//	delete[] a;
+
+	//}
 	
 
 
