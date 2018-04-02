@@ -35,11 +35,14 @@ int main() {
 	int boardYSize = 0;
 	int numbBombs = 0;
 	char *boardBombs;
+	char *userGuesses;
 	int checkBombs = 0;
 	int randBoardSpace = 0;
 	int xGuess = 0;
 	int yGuess = 0;
 	int bombChecker = 0;
+
+	srand(time(NULL));
 
 	//start the game
 	cout << endl << "First, how big of a board do you want to play on?" << endl << "Width: ";
@@ -89,6 +92,7 @@ int main() {
 	}
 		
 	boardBombs = new char[boardXSize * boardYSize];
+	userGuesses = new char[boardXSize * boardYSize];
 
 	while (checkBombs < numbBombs) {
 		randBoardSpace = getRandom(boardXSize * boardYSize);
@@ -99,7 +103,7 @@ int main() {
 		checkBombs++;
 	}
 
-	for (int x = 0; x<boardXSize * boardYSize; x++) { //verified randomizer works
+	for (int x = 0; x<boardXSize * boardYSize; x++) { //comment out when done
 		cout << boardBombs[x] << endl;
 	}
 
@@ -107,23 +111,23 @@ int main() {
 
 		cout << "Choose your X coordintate: ";
 		cin >> xGuess;
-		while (xGuess > boardXSize || xGuess < 0) {
+		while (xGuess > boardXSize - 1 || xGuess < 0) {
 			cout << "Sorry, I can't do that. Choose between 0 and " << boardXSize << ", please: ";
 			cin >> xGuess;
 		}
 		cout << "Choose your Y coordintate: ";
 		cin >> yGuess;
-		while (yGuess > boardYSize || yGuess < 0) {
+		while (yGuess > boardYSize - 1 || yGuess < 0) {
 			cout << "Sorry, I can't do that. Choose between 0 and " << boardYSize << ", please: ";
 			cin >> yGuess;
 		}
 
-		bombChecker = xGuess + (boardXSize * (yGuess - 1));
+		bombChecker = xGuess + (boardXSize * yGuess);
 		if (boardBombs[bombChecker] == 'X') {
 			gameOver = true;
 		}
-
 		else {
+			userGuesses[bombChecker] = 'y';
 			cout << endl << "        ";
 			for (int x = 0; x < boardXSize; x++) {
 				boardLegnthNumberPrint(x);
@@ -140,7 +144,7 @@ int main() {
 				}
 				cout << "| ";
 				for (int x = 0; x < boardXSize; x++) {
-					if (true) { //true = user has guessed this location
+					if (userGuesses[x + (boardXSize * y)] == 'y') {
 						cout << "O ";
 					}
 					else {
