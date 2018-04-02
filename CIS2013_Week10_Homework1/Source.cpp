@@ -34,102 +34,127 @@ int main() {
 	int boardXSize = 0;
 	int boardYSize = 0;
 	int numbBombs = 0;
-	int boardSize = 0;
 	char *boardBombs;
 	int checkBombs = 0;
 	int randBoardSpace = 0;
+	int xGuess = 0;
+	int yGuess = 0;
+	int bombChecker = 0;
 
 	//start the game
-		cout << endl << "First, how big of a board do you want to play on?" << endl << "Width: ";
+	cout << endl << "First, how big of a board do you want to play on?" << endl << "Width: ";
+	cin >> boardXSize;
+	while (boardXSize > 99 || boardXSize < 1) {
+		cout << "Sorry, I can't do that. Choose between 1 and 99, please: ";
 		cin >> boardXSize;
-		while (boardXSize > 99 || boardXSize < 1) {
-			cout << "Sorry, I can't do that. Choose between 1 and 99, please: ";
-			cin >> boardXSize;
-		}
-		cout << "Legnth: ";
+	}
+	cout << "Legnth: ";
+	cin >> boardYSize;
+	while (boardYSize > 99 || boardYSize < 1) {
+		cout << "Sorry, I can't do that. Choose between 1 and 99, please: ";
 		cin >> boardYSize;
-		while (boardYSize > 99 || boardYSize < 1) {
-			cout << "Sorry, I can't do that. Choose between 1 and 99, please: ";
-			cin >> boardYSize;
-		}
-		cout << "Okay, your board is a total of " << boardXSize * boardYSize << " spaces. And how many bombs are on this board?: ";
+	}
+	cout << "Okay, your board is a total of " << boardXSize * boardYSize << " spaces. And how many bombs are on this board?: ";
+	cin >> numbBombs;
+	while (numbBombs > boardXSize * boardYSize) {
+		cout << "Sorry, there can't be more bombs than spaces. Try again: ";
 		cin >> numbBombs;
-		while (numbBombs > boardXSize * boardYSize) {
-			cout << "Sorry, there can't be more bombs than spaces. Try again: ";
-			cin >> numbBombs;
-		}
-		while (numbBombs < 1) {
-			cout << "Sorry, you need at least 1 bomb. Try again: ";
-			cin >> numbBombs;
-		}
+	}
+	while (numbBombs < 1) {
+		cout << "Sorry, you need at least 1 bomb. Try again: ";
+		cin >> numbBombs;
+	}
 
-		//Print an empty board
-		cout << endl << "      Welcome to minesweeper!" << endl;
-		cout << endl << "        ";
-		for (int x = 0; x < boardXSize; x++) {
-			boardLegnthNumberPrint(x);
+	//Print an empty board
+	cout << endl << "      Welcome to minesweeper!" << endl;
+	cout << endl << "        ";
+	for (int x = 0; x < boardXSize; x++) {
+		boardLegnthNumberPrint(x);
+	}
+	cout << endl << "       ";
+	for (int x = 0; x < boardXSize; x++) {
+		boardLegnthLinePrint(x);
+	}
+	cout << endl;
+	for (int y = 0; y<boardYSize; y++) {
+		cout << "    " << y;
+		if (y < 10) {
+			cout << " ";
 		}
-		cout << endl << "       ";
-		for (int x = 0; x < boardXSize; x++) {
-			boardLegnthLinePrint(x);
+		cout << "| ";
+		for (int x = 0; x<boardXSize; x++) {
+			cout << ". ";
 		}
 		cout << endl;
-		for (int y = 0; y<boardYSize; y++) {
-			cout << "    " << y;
-			if (y < 10) {
-				cout << " ";
-			}
-			cout << "| ";
-			for (int x = 0; x<boardXSize; x++) {
-				cout << ". ";
-			}
-			cout << endl;
-		}
+	}
 		
-		boardBombs = new char[boardXSize * boardYSize];
+	boardBombs = new char[boardXSize * boardYSize];
 
-		while (checkBombs < numbBombs) {
+	while (checkBombs < numbBombs) {
+		randBoardSpace = getRandom(boardXSize * boardYSize);
+		while (boardBombs[randBoardSpace] == 'X') {
 			randBoardSpace = getRandom(boardXSize * boardYSize);
-			while (boardBombs[randBoardSpace] == 'X') {
-				randBoardSpace = getRandom(boardXSize * boardYSize);
-			}
-			boardBombs[randBoardSpace] = 'X';
-			checkBombs++;
 		}
+		boardBombs[randBoardSpace] = 'X';
+		checkBombs++;
+	}
 
-		for (int x = 0; x<boardXSize * boardYSize; x++) {
-			cout << boardBombs[x] << endl;
-		}
-
-		delete[] boardBombs;
-
+	for (int x = 0; x<boardXSize * boardYSize; x++) { //verified randomizer works
+		cout << boardBombs[x] << endl;
+	}
 
 	while (gameOver == false) {
 
-	}	
-	
-	
-	//	int *a;
-	//	a = new int[len];
+		cout << "Choose your X coordintate: ";
+		cin >> xGuess;
+		while (xGuess > boardXSize || xGuess < 0) {
+			cout << "Sorry, I can't do that. Choose between 0 and " << boardXSize << ", please: ";
+			cin >> xGuess;
+		}
+		cout << "Choose your Y coordintate: ";
+		cin >> yGuess;
+		while (yGuess > boardYSize || yGuess < 0) {
+			cout << "Sorry, I can't do that. Choose between 0 and " << boardYSize << ", please: ";
+			cin >> yGuess;
+		}
 
-	//	for (int i = 0; i<len; i++) {
-	//		cout << "Int number " << i << " should be: ";
-	//		cin >> a[i];
-	//	}
+		bombChecker = xGuess + (boardXSize * (yGuess - 1));
+		if (boardBombs[bombChecker] == 'X') {
+			gameOver = true;
+		}
 
-	//	cout << endl << "Your list of numbers is:" << endl;
+		else {
+			cout << endl << "        ";
+			for (int x = 0; x < boardXSize; x++) {
+				boardLegnthNumberPrint(x);
+			}
+			cout << endl << "       ";
+			for (int x = 0; x < boardXSize; x++) {
+				boardLegnthLinePrint(x);
+			}
+			cout << endl;
+			for (int y = 0; y < boardYSize; y++) {
+				cout << "    " << y;
+				if (y < 10) {
+					cout << " ";
+				}
+				cout << "| ";
+				for (int x = 0; x < boardXSize; x++) {
+					if (true) { //true = user has guessed this location
+						cout << "O ";
+					}
+					else {
+						cout << ". ";
+					}
+				}
+				cout << endl;
+			}
+		}
 
-	//	for (int x = 0; x<len; x++) {
-	//		cout << a[x] << endl;
-	//	}
-
-	//	cout << "Do you want to continue: Y=1, N=0 :";
-	//	cin >> cont;
-
-	//	delete[] a;
-
-	//}
-	
+	}
+	//cout the full board
+	cout << "You are dead!";
+	delete[] boardBombs;
 
 
 //* Application request a coordinate to check for a bomb.
